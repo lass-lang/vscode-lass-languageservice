@@ -1,0 +1,26 @@
+$primary-color: #6366f1;
+$spacing: 16px;
+
+@mixin button-variant($bg) {
+  background: $bg;
+  border: 2px solid darken($bg, 10%);
+  
+  &:hover {
+    background: darken($bg, 15%);
+  }
+}
+
+.button {
+  padding: $spacing;
+  color: white;
+  
+  &-primary {
+    @include button-variant($primary-color);
+  }
+}
+
+@for $i from 1 through 4 {
+  .m-#{$i} {
+    margin: #{$i * 0.25}rem;
+  }
+}

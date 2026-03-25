@@ -1,0 +1,20 @@
+primary-color = #6366f1
+spacing = 16px
+
+button-variant(bg)
+  background bg
+  border 2px solid darken(bg, 10%)
+  
+  &:hover
+    background darken(bg, 15%)
+
+.button
+  padding spacing
+  color white
+  
+  &-primary
+    button-variant(primary-color)
+    
+for num in 1 2 3 4
+  .m-{num}
+    margin (num * 0.25)rem

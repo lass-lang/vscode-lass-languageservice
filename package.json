@@ -1,0 +1,63 @@
+{
+  "name": "vscode-lass",
+  "displayName": "Lass Language Support",
+  "version": "0.0.1",
+  "description": "TextMate grammar and VS Code extension for Lass",
+  "private": true,
+  "publisher": "lass-lang",
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "keywords": [
+    "lass",
+    "css",
+    "textmate",
+    "grammar",
+    "syntax-highlighting"
+  ],
+  "author": "Lass Language Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lass-lang/lass.git",
+    "directory": "plugins/vscode-lass"
+  },
+  "contributes": {
+    "languages": [
+      {
+        "id": "lass",
+        "extensions": [
+          ".lass"
+        ],
+        "aliases": [
+          "Lass",
+          "lass"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "lass",
+        "scopeName": "source.lass",
+        "path": "./syntaxes/lass.tmLanguage.json",
+        "embeddedLanguages": {
+          "source.ts": "typescript",
+          "source.css": "css",
+          "meta.embedded.expression.lass": "typescript",
+          "meta.embedded.fragment.lass": "css"
+        }
+      }
+    ]
+  },
+  "files": [
+    "syntaxes",
+    "README.md"
+  ],
+  "dependencies": {
+    "shiki": "^4.0.2"
+  }
+}

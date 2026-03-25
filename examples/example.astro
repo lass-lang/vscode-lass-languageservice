@@ -1,0 +1,35 @@
+---
+const primary = '#6366f1';
+const spacing = 16;
+const sizes = [1, 2, 4, 8];
+
+interface Props {
+  variant?: 'primary' | 'secondary';
+}
+
+const { variant = 'primary' } = Astro.props;
+---
+
+<button class:list={['button', variant]}>
+  <slot />
+</button>
+
+<style define:vars={{ primary, spacing }}>
+  .button {
+    padding: calc(var(--spacing) * 1px);
+    color: white;
+    border-radius: 0.5rem;
+  }
+  
+  .button.primary {
+    background: var(--primary);
+    border: 2px solid var(--primary);
+  }
+</style>
+
+<style>
+  .m-1 { margin: 0.25rem; }
+  .m-2 { margin: 0.5rem; }
+  .m-4 { margin: 1rem; }
+  .m-8 { margin: 2rem; }
+</style>

@@ -1,0 +1,14 @@
+/* AC3: File without --- separator - entire file is CSS with Lass symbols */
+
+.box {
+  color: var(--primary);
+  border: 1px solid blue;
+}
+
+.spacing-N {
+  margin: calc(1rem * 0.25);
+}
+
+.another {
+  background: white;
+}

@@ -1,0 +1,18 @@
+/* AC3: File without --- separator - entire file is CSS with Lass symbols */
+
+.box {
+  color: $primary;
+  border: 1px solid blue;
+  outline: @(border);
+}
+
+{{ [1, 2, 3].map(n => @{
+.spacing-{{ n }} {
+  margin: {{ n * 0.25 }}rem;
+}
+}) }}
+
+// Comment in CSS-only file
+.another {
+  background: white;
+}

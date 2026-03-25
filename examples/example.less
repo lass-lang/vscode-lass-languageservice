@@ -1,0 +1,31 @@
+@primary-color: #6366f1;
+@spacing: 16px;
+
+.button-variant(@bg) {
+  background: @bg;
+  border: 2px solid darken(@bg, 10%);
+  
+  &:hover {
+    background: darken(@bg, 15%);
+  }
+}
+
+.button {
+  padding: @spacing;
+  color: white;
+  
+  &-primary {
+    .button-variant(@primary-color);
+  }
+}
+
+.generate-spacing() {
+  .loop(@i) when (@i > 0) {
+    .m-@{i} {
+      margin: (@i * 0.25rem);
+    }
+    .loop(@i - 1);
+  }
+  .loop(4);
+}
+.generate-spacing();

@@ -1,0 +1,87 @@
+---
+import palette from './palette.json'
+const $primary = '#2563eb'
+const colors = { blue: '#0066cc', red: '#cc0000' }
+--- design tokens and styles
+
+/* ===========================================
+   TEST FILE FOR LASS TEXTMATE GRAMMAR
+   Coverage: All ACs from Story 10-1
+   =========================================== */
+
+/* AC2: Two-zone model - Content above --- is JS, below is CSS */
+/* AC6: Separator comment - "design tokens and styles" should be highlighted as comment */
+
+/* AC4: $param variable substitution */
+.button {
+  background: $primary;
+  color: white;
+}
+
+/* AC4: @(prop) property accessor */
+pre.shiki {
+  border: 1px solid oklch(25% 0.02 270);
+  outline-offset: 2px;
+  outline: @(border);
+}
+
+/* AC4: {{ expr }} interpolation with JS expressions */
+:root {
+  {{ Object.entries(palette).map(([name, value]) => @{
+    --color-{{ name }}: {{ value }};
+  }) }}
+}
+
+/* AC4: @{ css } fragments with nested {{ }} */
+{{ [1, 2, 4, 8].map(n => @{
+.mt-{{ n }} {
+  margin-block-start: calc(var(--space-xs) * {{ n }});
+}
+}) }}
+
+/* AC4: // single-line comments (should be highlighted distinct from block comments) */
+.example {
+  // This is a dev comment
+  color: blue; // inline comment
+  /* This is a block comment */
+}
+
+/* AC5: Protected contexts - symbols in strings should NOT be highlighted as Lass symbols */
+.protected-string {
+  content: "$notavar";
+  data-prop: '@(notaprop)';
+  quotes: "{{ notexpr }}";
+}
+
+/* AC5: Protected contexts - symbols in url() should NOT be highlighted */
+.protected-url {
+  background: url("path/with/$dollar/image.png");
+  mask: url('@(notaprop)/mask.svg');
+}
+
+/* AC5: Protected contexts - symbols in block comments should NOT be highlighted */
+/* $notavar @(notaprop) {{ notexpr }} @{ notfragment } */
+/* // This is not a line comment inside a block comment */
+
+/* AC6: ---nospace should NOT be a separator (CSS custom properties) */
+.custom-props {
+  ---nospace: value;
+  --actual-custom-prop: #ff0000;
+}
+
+/* Complex nesting example - all symbols should work recursively */
+.advanced {
+  {{ themes.map(theme => @{
+    .theme-{{ theme.name }} {
+      --primary: {{ theme.colors.primary }};
+      
+      {{ sizes.map(size => @{
+        &.size-{{ size }} {
+          padding: {{ size }}px;
+          border: {{ size / 2 }}px solid $primary;
+          margin: @(padding);
+        }
+      }) }}
+    }
+  }) }}
+}
