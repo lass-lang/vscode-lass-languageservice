@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Lass TextMate Grammar
 
 TextMate grammar for `.lass` files, providing syntax highlighting for the Lass language across VS Code, GitHub, Shiki, and other TextMate-compatible editors.
@@ -192,3 +193,6 @@ Submit this grammar to `github-linguist/linguist` for `.lass` file highlighting 
 ## License
 
 MIT
+=======
+# vscode-lass-languageservice
+>>>>>>> 672070ed946cec638329d55825a889014de8dffd
