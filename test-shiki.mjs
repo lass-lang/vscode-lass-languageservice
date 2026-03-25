@@ -1,7 +1,5 @@
 import { createHighlighter } from 'shiki'
-import { readFileSync } from 'fs'
-
-const lassGrammar = JSON.parse(readFileSync('./syntaxes/lass.tmLanguage.json', 'utf-8'))
+import lassGrammar from 'lass-tmlanguage' assert { type: 'json' }
 
 const highlighter = await createHighlighter({
   themes: ['github-dark'],

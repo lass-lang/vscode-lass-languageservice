@@ -43,7 +43,7 @@
       {
         "language": "lass",
         "scopeName": "source.lass",
-        "path": "./syntaxes/lass.tmLanguage.json",
+        "path": "./node_modules/lass-tmlanguage/lass.tmLanguage.json",
         "embeddedLanguages": {
           "source.ts": "typescript",
           "source.css": "css",
@@ -54,10 +54,10 @@
     ]
   },
   "files": [
-    "syntaxes",
     "README.md"
   ],
   "dependencies": {
+    "lass-tmlanguage": "workspace:*",
     "shiki": "^4.0.2"
   }
 }
