@@ -1,9 +1,8 @@
 {
-  "name": "vscode-lass",
+  "name": "@lass-lang/vscode-lass-languageservice",
   "displayName": "Lass Language Support",
-  "version": "0.0.1",
-  "description": "TextMate grammar and VS Code extension for Lass",
-  "private": true,
+  "version": "0.0.2",
+  "description": "Syntax highlighting and language support for Lass - CSS with embedded TypeScript",
   "publisher": "lass-lang",
   "engines": {
     "vscode": "^1.80.0"
@@ -14,17 +13,30 @@
   "keywords": [
     "lass",
     "css",
+    "typescript",
+    "syntax",
+    "highlighting",
+    "tmlanguage",
     "textmate",
-    "grammar",
-    "syntax-highlighting"
+    "language"
   ],
+  "icon": "icons/icon.png",
+  "galleryBanner": {
+    "color": "#1E1E1E",
+    "theme": "dark"
+  },
   "author": "Lass Language Team",
   "license": "MIT",
+  "pricing": "Free",
   "repository": {
     "type": "git",
     "url": "https://github.com/lass-lang/lass.git",
-    "directory": "plugins/vscode-lass"
+    "directory": "plugins/vscode-lass-languageservice"
   },
+  "bugs": {
+    "url": "https://github.com/lass-lang/lass/issues"
+  },
+  "homepage": "https://lass-lang.dev",
   "contributes": {
     "languages": [
       {
@@ -43,7 +55,7 @@
       {
         "language": "lass",
         "scopeName": "source.lass",
-        "path": "./node_modules/lass-tmlanguage/lass.tmLanguage.json",
+        "path": "./syntaxes/lass.tmLanguage.json",
         "embeddedLanguages": {
           "source.ts": "typescript",
           "source.css": "css",
@@ -51,13 +63,45 @@
           "meta.embedded.fragment.lass": "css"
         }
       }
-    ]
+    ],
+    "configuration": {
+      "title": "Lass",
+      "properties": {
+        "lass.preambleLanguage": {
+          "type": "string",
+          "enum": [
+            "auto",
+            "typescript",
+            "javascript"
+          ],
+          "default": "auto",
+          "description": "Language mode for preamble and expressions. 'auto' defaults to TypeScript (first-class citizen)."
+        }
+      }
+    }
   },
-  "files": [
-    "README.md"
+  "main": "./dist/extension.js",
+  "activationEvents": [
+    "onLanguage:lass"
   ],
   "dependencies": {
+    "@lass-lang/language-server": "workspace:*",
+    "vscode-languageclient": "^9.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/vscode": "^1.80.0",
+    "@vscode/vsce": "^3.0.0",
+    "esbuild": "^0.25.0",
     "lass-tmlanguage": "workspace:*",
-    "shiki": "^4.0.2"
+    "shiki": "^4.0.2",
+    "typescript": "^5.7.0"
+  },
+  "scripts": {
+    "build": "esbuild src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node && esbuild ../../packages/lass-language-server/src/server.ts --bundle --outfile=dist/server.js --external:vscode --format=cjs --platform=node --packages=external",
+    "watch": "esbuild src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node --watch",
+    "clean": "rm -rf dist",
+    "package": "pnpm build && vsce package",
+    "publish": "vsce publish"
   }
 }

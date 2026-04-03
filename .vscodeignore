@@ -1,0 +1,14 @@
+.vscode/**
+.vscode-test/**
+.gitignore
+.gitattributes
+node_modules/**
+examples/**
+*.vsix
+test-grammar-simple.mjs
+test-shiki.mjs
+TEST.md
+.git/**
+.DS_Store
+*.log
+npm-debug.log*

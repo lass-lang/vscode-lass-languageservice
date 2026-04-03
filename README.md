@@ -1,80 +1,28 @@
-# Lass TextMate Grammar
+# Lass Language Support for VS Code
 
-TextMate grammar for `.lass` files, providing syntax highlighting for the Lass language across VS Code, GitHub, Shiki, and other TextMate-compatible editors.
-
-## Overview
-
-Lass is a CSS superset that bridges JavaScript and CSS with six symbols. The grammar handles Lass's two-zone model:
-
-- **Script Preamble** (between opening and closing `---` delimiters): TypeScript (default) or JavaScript
-- **CSS Zone** (after closing `---` or entire file): CSS with Lass symbol extensions
+Official VS Code extension for the [Lass](https://lass-lang.dev) language — syntax highlighting, bracket matching, and language features for `.lass` files.
 
 ## Features
 
-### Two-Zone Model
+- **Syntax Highlighting** — Full TextMate grammar for `.lass` files with VS Code-quality highlighting
+- **Two-Zone Model** — Proper highlighting for the TypeScript preamble (above `---`) and CSS zone (below `---`)
+- **Smart Editing** — Auto-closing for Lass symbols: `{{ }}`, `@{ }`, `@( )`
+- **Comment Toggling** — `//` line comments (Cmd+/) and `/* */` block comments (Shift+Alt+A)
+- **Bracket Matching** — Intelligent matching for CSS braces, JS brackets, and Lass symbols
 
-Files can contain:
-1. **With delimiters**: JS preamble between opening `---` (line 1) and closing `---`, CSS after
-2. **Without delimiters**: Pure CSS with Lass symbols
+## What is Lass?
 
-### Lass Symbol Highlighting
+Lass is a CSS authoring language that embeds TypeScript instead of inventing its own programming constructs. Where Sass adds `@mixin` and `@for`, Lass uses real JavaScript/TypeScript — one language to learn, zero new control flow.
 
-| Symbol | Description | Scope |
-|--------|-------------|-------|
-| `---` | Opening/closing delimiters (optional comment after space) | `meta.separator.lass.open` / `meta.separator.lass.close` |
-| `$param` | Variable substitution | `variable.other.lass` |
-| `{{ expr }}` | JavaScript expression interpolation | `meta.embedded.inline.js` |
-| `@(prop)` | Property lookup accessor | `variable.function.lass` |
-| `@{ css }` | CSS fragment block | `meta.embedded.inline.css` |
-| `//` | Single-line comment (stripped from output) | `comment.line.double-slash.lass` |
+Learn more at [lass-lang.dev](https://lass-lang.dev)
 
-### Protected Contexts
-
-Lass symbols inside the following contexts are **not** highlighted as Lass syntax (they remain as CSS):
-
-- String literals: `"$notavar"`, `'@(notaprop)'`
-- `url()` values: `url("path/with/$dollar")`
-- Block comments: `/* $notavar @(notaprop) */`
-
-This matches the transpiler's behavior, which does not transform symbols in these contexts.
-
-## Scope Names for Theme Authors
-
-The grammar uses the following scope names that theme authors can customize:
-
-### Lass-Specific Scopes
-
-```
-source.lass                                  # Root scope
-meta.separator.lass                          # --- separator line
-comment.line.separator.lass                  # Comment after --- 
-variable.other.lass                          # $param variables
-variable.function.lass                       # @(prop) property accessors
-comment.line.double-slash.lass               # // comments
-meta.embedded.inline.js                      # {{ expr }} content
-meta.embedded.inline.css                     # @{ css } content
-punctuation.definition.template.expression.begin.lass  # {{
-punctuation.definition.template.expression.end.lass    # }}
-punctuation.definition.template.fragment.begin.lass    # @{
-punctuation.definition.template.fragment.end.lass      # }
-```
-
-### Delegated Scopes
-
-- **Script Preamble**: Uses `source.ts` (VS Code's built-in TypeScript grammar — highlights both TS and JS)
-- **CSS Zone**: Uses `source.css` (VS Code's built-in CSS grammar)
-- **Inside `{{ }}`**: Uses `source.ts`
-- **Inside `@{ }`**: Uses `source.css` with Lass symbol overrides
-
-## Example Highlighting
-
-### File with Separator
+## Quick Example
 
 ```lass
 ---
 import palette from './palette.json'
 const $primary = '#2563eb'
---- design tokens and styles
+---
 
 .button {
   background: $primary;
@@ -87,108 +35,60 @@ const $primary = '#2563eb'
 }
 ```
 
-**Highlighting**:
-- Line 1: Opening delimiter
-- Line 2-3: JavaScript (preamble zone)
-- Line 4: Closing delimiter + comment
-- Line 6-8: CSS with `$primary` as Lass variable
-- Line 11-13: `{{ }}` interpolation with `@{ }` fragment inside
+**What you'll see:**
 
-### File without Separator
+- Lines 1-4: TypeScript preamble highlighted between `---` delimiters
+- `$primary` highlighted as a Lass variable
+- `{{ }}` expressions highlighted as embedded TypeScript
+- `@{ }` fragments highlighted as embedded CSS
+- Everything else highlighted as standard CSS
 
-```lass
-.box {
-  color: $primary;
-  outline: @(border);
-}
+## Installation
 
-{{ utils.map(u => @{ .{{ u }}: value; }) }}
+Install from the VS Code Marketplace:
+
+1. Open VS Code
+2. Go to Extensions (Cmd+Shift+X / Ctrl+Shift+X)
+3. Search for **"Lass Language Support"**
+4. Click **Install**
+
+Or install from the command line:
+
+```bash
+code --install-extension lass-lang.vscode-lass
 ```
 
-**Highlighting**:
-- Entire file: CSS zone with Lass symbols
-- No JS preamble zone
+## Supported Lass Symbols
 
-## Testing
+| Symbol | Purpose | Auto-close |
+|--------|---------|------------|
+| `---` | Zone separator (preamble / CSS) | — |
+| `$param` | Variable substitution | — |
+| `{{ expr }}` | TypeScript expression interpolation | Yes |
+| `@{ css }` | CSS fragment block | Yes |
+| `@(prop)` | Property lookup accessor | Yes |
+| `//` | Single-line comment (stripped from output) | — |
 
-### Manual Testing in VS Code
+## Requirements
 
-1. Open a `.lass` file in VS Code
-2. Run **Developer: Inspect Editor Tokens and Scopes** (Cmd+Shift+P)
-3. Click on any token to see its scope
-4. Verify scopes match the table above
+- VS Code 1.80.0 or higher
 
-### Test Files
+## Extension Settings
 
-- `examples/test-file.lass` - Comprehensive test covering all features
-- `examples/no-separator.lass` - File without `---` separator
+This extension contributes syntax highlighting and language configuration only. No additional settings are required.
 
-## Technical Details
+## Known Issues
 
-### Architecture
+See [GitHub Issues](https://github.com/lass-lang/lass/issues) for known issues and feature requests.
 
-The grammar follows Astro's frontmatter-style approach:
+## Release Notes
 
-1. **Detect file structure**: Check for `---` on line 1 using `\A` anchor
-2. **Zone delegation**:
-   - Between opening and closing `---`: Inject `source.ts` (TypeScript grammar — JS is valid TS)
-   - After closing `---` or entire file: Inject `source.css` with Lass overrides
-3. **Symbol patterns**: Match Lass symbols with higher priority than CSS
-4. **Recursion**: `@{ }` can contain `{{ }}`, which can contain `@{ }`, etc.
+See [CHANGELOG.md](CHANGELOG.md) for release history.
 
-### Delimiter Pattern
+## Contributing
 
-```regex
-\A---(\s.*|-*)$    # Opening delimiter (line 1 only)
-^---(\s.*|-*)$     # Closing delimiter
-```
-
-- `\A`: Absolute start of document (opening delimiter must be on line 1)
-- `^---`: Three dashes at start of line
-- `(\s.*|-*)`: Optional whitespace + comment, or extra dashes (e.g., `---`, `------`)
-- Whitespace required after `---` to avoid matching CSS custom properties (`--this`)
-
-### Protected Context Handling
-
-TextMate's scope hierarchy automatically prevents Lass pattern matching inside higher-priority scopes:
-
-- When inside `string.quoted.double.css`, Lass patterns don't apply
-- When inside `meta.function.url.css`, Lass patterns don't apply
-- When inside `comment.block.css`, Lass patterns don't apply
-
-No special logic needed - this is handled by pattern priority.
-
-## Integration
-
-### VS Code Extension (Story 10.2)
-
-This grammar will be bundled in the Lass VS Code extension along with language configuration (brackets, comments, auto-closing pairs).
-
-### Shiki (Story 10.3)
-
-Load the grammar into Shiki for build-time syntax highlighting:
-
-```ts
-import lassGrammar from '@lass-lang/vscode-lass/syntaxes/lass.tmLanguage.json'
-import { createHighlighter } from 'shiki'
-
-const highlighter = await createHighlighter({
-  themes: ['github-dark'],
-  langs: [lassGrammar]
-})
-```
-
-### GitHub Linguist (Story 10.4)
-
-Submit this grammar to `github-linguist/linguist` for `.lass` file highlighting on GitHub.
-
-## References
-
-- [TextMate Language Grammars](https://macromates.com/manual/en/language_grammars)
-- [VS Code Syntax Highlighting Guide](https://code.visualstudio.com/api/language-extensions/syntax-highlight-guide)
-- [Shiki Custom Languages](https://shiki.style/guide/load-lang)
-- [Lass Language Specification](../../apps/lass-docs/content/llms.txt)
+Contributions are welcome! Visit the [Lass monorepo](https://github.com/lass-lang/lass) to get started.
 
 ## License
 
-MIT
+MIT — See [LICENSE](LICENSE) for details.
