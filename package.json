@@ -93,7 +93,7 @@
     "@types/vscode": "^1.80.0",
     "@vscode/vsce": "^3.0.0",
     "esbuild": "^0.25.0",
-    "lass-tmlanguage": "workspace:*",
+    "@lass-lang/lass-tmlanguage": "workspace:*",
     "shiki": "^4.0.2",
     "typescript": "^5.7.0"
   },
